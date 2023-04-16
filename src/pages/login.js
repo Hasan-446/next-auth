@@ -14,6 +14,7 @@ import LoginValidation from "../../validation/LoginValidation";
 
 const Login = () => {
   const [show, setShow] = useState(false);
+  const [loginError, setLoginError] = useState("");
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -33,15 +34,12 @@ const Login = () => {
     });
     if (status.error) {
       // handle error
-      console.error(status.error);
-      // display error message to user
-      alert(status.error);
+      setLoginError(status.error);
     } else if (status.ok) {
       // redirect to home page after successful login
       router.push("/");
     }
   }
-  
 
   async function googleSignInHandler() {
     signIn("google", { callbackUrl: "/" });
@@ -68,6 +66,9 @@ const Login = () => {
 
         {/* form */}
         <form className="flex flex-col gap-5" onSubmit={formik.handleSubmit}>
+          {loginError && (
+            <span className="text-sm text-rose-500"> {loginError}</span>
+          )}
           <div className={styles.input_group}>
             <input
               type="email"
@@ -123,7 +124,12 @@ const Login = () => {
               className={styles.button_custom}
             >
               Sign In with Google{" "}
-              <Image src={"/assets/google.svg"} width="20" height={20} alt=""></Image>
+              <Image
+                src={"/assets/google.svg"}
+                width="20"
+                height={20}
+                alt=""
+              ></Image>
             </button>
           </div>
           <div className="input-button">
@@ -133,7 +139,12 @@ const Login = () => {
               className={styles.button_custom}
             >
               Sign In with Github{" "}
-              <Image src={"/assets/github.svg"} width={25} height={25} alt=""></Image>
+              <Image
+                src={"/assets/github.svg"}
+                width={25}
+                height={25}
+                alt=""
+              ></Image>
             </button>
           </div>
         </form>
